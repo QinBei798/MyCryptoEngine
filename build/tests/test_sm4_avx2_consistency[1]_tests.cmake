@@ -1,0 +1,7 @@
+add_test( SM4AVX2AlignTest.LoadStore256BytesNoSegfault /mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency [==[--gtest_filter=SM4AVX2AlignTest.LoadStore256BytesNoSegfault]==] --gtest_also_run_disabled_tests)
+set_tests_properties( SM4AVX2AlignTest.LoadStore256BytesNoSegfault PROPERTIES WORKING_DIRECTORY /mnt/d/MyCryptoEngine/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test( SM4AVX2AlignTest.MisalignedSourceDoesNotCrash /mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency [==[--gtest_filter=SM4AVX2AlignTest.MisalignedSourceDoesNotCrash]==] --gtest_also_run_disabled_tests)
+set_tests_properties( SM4AVX2AlignTest.MisalignedSourceDoesNotCrash PROPERTIES WORKING_DIRECTORY /mnt/d/MyCryptoEngine/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test( SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB /mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency [==[--gtest_filter=SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB]==] --gtest_also_run_disabled_tests)
+set_tests_properties( SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB PROPERTIES WORKING_DIRECTORY /mnt/d/MyCryptoEngine/build/tests SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set( test_sm4_avx2_consistency_TESTS SM4AVX2AlignTest.LoadStore256BytesNoSegfault SM4AVX2AlignTest.MisalignedSourceDoesNotCrash SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB)

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsm4_avx2.a CMakeFiles/sm4_avx2.dir/src/sm4_avx2.cpp.o
+/usr/bin/ranlib libsm4_avx2.a

@@ -1,0 +1,1 @@
+/usr/bin/c++ -O1 -g -mavx2 -Wall -Wextra -fsanitize=address -O3 -mavx2 -Wall -Wextra -Wpedantic -O3 -DNDEBUG CMakeFiles/test_sm4_avx2_consistency.dir/test_sm4_avx2_consistency.cpp.o -o test_sm4_avx2_consistency  ../libsm4_avx2.a ../libsm4_core.a ../lib/libgtest.a ../lib/libgtest_main.a ../lib/libgtest.a 

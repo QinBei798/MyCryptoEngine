@@ -1,0 +1,54 @@
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32 failed with the following output:
+Change Dir: /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_fc77a/fast && gmake: Warning: File 'Makefile' has modification time 20 s in the future
+/usr/bin/gmake  -f CMakeFiles/cmTC_fc77a.dir/build.make CMakeFiles/cmTC_fc77a.dir/build
+gmake[1]: Entering directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake[1]: Warning: File 'CMakeFiles/cmTC_fc77a.dir/flags.make' has modification time 20 s in the future
+Building CXX object CMakeFiles/cmTC_fc77a.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_CXX_FLAG_WSHORTEN_64_TO_32  -O1 -g -mavx2 -Wall -Wextra -fsanitize=address -O3 -mavx2 -Wall -Wextra -Wpedantic  -Wall  -Wextra  -Wshadow  -Wfloat-equal  -Wold-style-cast  -Wconversion  -Werror  -pedantic  -pedantic-errors  -Wshorten-64-to-32   -Wshorten-64-to-32 -std=c++17 -o CMakeFiles/cmTC_fc77a.dir/src.cxx.o -c /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command-line option '-Wshorten-64-to-32'
+c++: error: unrecognized command-line option '-Wshorten-64-to-32'
+gmake[1]: *** [CMakeFiles/cmTC_fc77a.dir/build.make:78: CMakeFiles/cmTC_fc77a.dir/src.cxx.o] Error 1
+gmake[1]: Leaving directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:127: cmTC_fc77a/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WD654 failed with the following output:
+Change Dir: /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_82f70/fast && gmake: Warning: File 'Makefile' has modification time 20 s in the future
+/usr/bin/gmake  -f CMakeFiles/cmTC_82f70.dir/build.make CMakeFiles/cmTC_82f70.dir/build
+gmake[1]: Entering directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake[1]: Warning: File 'CMakeFiles/cmTC_82f70.dir/flags.make' has modification time 20 s in the future
+Building CXX object CMakeFiles/cmTC_82f70.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_CXX_FLAG_WD654  -O1 -g -mavx2 -Wall -Wextra -fsanitize=address -O3 -mavx2 -Wall -Wextra -Wpedantic  -Wall  -Wextra  -Wshadow  -Wfloat-equal  -Wold-style-cast  -Wconversion  -Werror  -pedantic  -pedantic-errors  -fstrict-aliasing  -Wno-deprecated-declarations  -Wno-deprecated  -Wstrict-aliasing  -wd654   -wd654 -std=c++17 -o CMakeFiles/cmTC_82f70.dir/src.cxx.o -c /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command-line option '-wd654'
+c++: error: unrecognized command-line option '-wd654'
+gmake[1]: *** [CMakeFiles/cmTC_82f70.dir/build.make:78: CMakeFiles/cmTC_82f70.dir/src.cxx.o] Error 1
+gmake[1]: Leaving directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:127: cmTC_82f70/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAVE_CXX_FLAG_WTHREAD_SAFETY failed with the following output:
+Change Dir: /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_c323b/fast && gmake: Warning: File 'Makefile' has modification time 20 s in the future
+/usr/bin/gmake  -f CMakeFiles/cmTC_c323b.dir/build.make CMakeFiles/cmTC_c323b.dir/build
+gmake[1]: Entering directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake[1]: Warning: File 'CMakeFiles/cmTC_c323b.dir/flags.make' has modification time 20 s in the future
+Building CXX object CMakeFiles/cmTC_c323b.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_CXX_FLAG_WTHREAD_SAFETY  -O1 -g -mavx2 -Wall -Wextra -fsanitize=address -O3 -mavx2 -Wall -Wextra -Wpedantic  -Wall  -Wextra  -Wshadow  -Wfloat-equal  -Wold-style-cast  -Wconversion  -Werror  -pedantic  -pedantic-errors  -fstrict-aliasing  -Wno-deprecated-declarations  -Wno-deprecated  -Wstrict-aliasing  -Wthread-safety   -Wthread-safety -std=c++17 -o CMakeFiles/cmTC_c323b.dir/src.cxx.o -c /mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command-line option '-Wthread-safety'
+c++: error: unrecognized command-line option '-Wthread-safety'
+gmake[1]: *** [CMakeFiles/cmTC_c323b.dir/build.make:78: CMakeFiles/cmTC_c323b.dir/src.cxx.o] Error 1
+gmake[1]: Leaving directory '/mnt/d/MyCryptoEngine/build/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:127: cmTC_c323b/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }

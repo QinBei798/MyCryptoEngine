@@ -1,0 +1,381 @@
+Start testing: May 18 18:56 CST
+----------------------------------------------------------
+78/91 Testing: SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<30-0400-0020-5000-0040-0400-0020-5000-0040-0400-0020-5000-0050-0400-0020-5000-0060-0400-0020-5000-0060-0400-0020-5000-0070-0400-0020-5000-0080-0400-0020-5000-0080-0400-0020-5000-00E0-6E80-2AD3-55...
+78/91 Test: SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<30-0400-0020-5000-0040-0400-0020-5000-0040-0400-0020-5000-0050-0400-0020-5000-0060-0400-0020-5000-0060-0400-0020-5000-0070-0400-0020-5000-0080-0400-0020-5000-0080-0400-0020-5000-00E0-6E80-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<30-0400-0020-5000-0040-0400-0020-5000-0040-0400-0020-5000-0050-0400-0020-5000-0060-0400-0020-5000-0060-0400-0020-5000-0070-0400-0020-5000-0080-0400-0020-5000-0080-0400-0020-5000-00E0-6E80-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt
+[       OK ] SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<30-0400-0020-5000-0040-0400-0020-5000-0040-0400-0020-5000-0050-0400-0020-5000-0060-0400-0020-5000-0060-0400-0020-5000-0070-0400-0020-5000-0080-0400-0020-5000-0080-0400-0020-5000-00E0-6E80-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<30-0400-0020-5000-0040-0400-0020-5000-0040-0400-0020-5000-0050-0400-0020-5000-0060-0400-0020-5000-0060-0400-0020-5000-0070-0400-0020-5000-0080-0400-0020-5000-0080-0400-0020-5000-00E0-6E80-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+79/91 Testing: SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<90-0600-0020-5000-00A0-0600-0020-5000-00A0-0600-0020-5000-00B0-0600-0020-5000-00C0-0600-0020-5000-00C0-0600-0020-5000-00D0-0600-0020-5000-00E0-0600-0020-5000-00E0-0600-0020-5000-0000-7080-2AD3-55...
+79/91 Test: SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<90-0600-0020-5000-00A0-0600-0020-5000-00A0-0600-0020-5000-00B0-0600-0020-5000-00C0-0600-0020-5000-00C0-0600-0020-5000-00D0-0600-0020-5000-00E0-0600-0020-5000-00E0-0600-0020-5000-0000-7080-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<90-0600-0020-5000-00A0-0600-0020-5000-00A0-0600-0020-5000-00B0-0600-0020-5000-00C0-0600-0020-5000-00C0-0600-0020-5000-00D0-0600-0020-5000-00E0-0600-0020-5000-00E0-0600-0020-5000-0000-7080-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext
+[       OK ] SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<90-0600-0020-5000-00A0-0600-0020-5000-00A0-0600-0020-5000-00B0-0600-0020-5000-00C0-0600-0020-5000-00C0-0600-0020-5000-00D0-0600-0020-5000-00E0-0600-0020-5000-00E0-0600-0020-5000-0000-7080-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.EncryptBlockMatchesGMVector/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<90-0600-0020-5000-00A0-0600-0020-5000-00A0-0600-0020-5000-00B0-0600-0020-5000-00C0-0600-0020-5000-00C0-0600-0020-5000-00D0-0600-0020-5000-00E0-0600-0020-5000-00E0-0600-0020-5000-0000-7080-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+80/91 Testing: SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<70-0900-0020-5000-0080-0900-0020-5000-0080-0900-0020-5000-0090-0900-0020-5000-00A0-0900-0020-5000-00A0-0900-0020-5000-00B0-0900-0020-5000-00C0-0900-0020-5000-00C0-0900-0020-5000-00E0-6E80-2AD3-55...
+80/91 Test: SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<70-0900-0020-5000-0080-0900-0020-5000-0080-0900-0020-5000-0090-0900-0020-5000-00A0-0900-0020-5000-00A0-0900-0020-5000-00B0-0900-0020-5000-00C0-0900-0020-5000-00C0-0900-0020-5000-00E0-6E80-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<70-0900-0020-5000-0080-0900-0020-5000-0080-0900-0020-5000-0090-0900-0020-5000-00A0-0900-0020-5000-00A0-0900-0020-5000-00B0-0900-0020-5000-00C0-0900-0020-5000-00C0-0900-0020-5000-00E0-6E80-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt
+[       OK ] SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<70-0900-0020-5000-0080-0900-0020-5000-0080-0900-0020-5000-0090-0900-0020-5000-00A0-0900-0020-5000-00A0-0900-0020-5000-00B0-0900-0020-5000-00C0-0900-0020-5000-00C0-0900-0020-5000-00E0-6E80-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<70-0900-0020-5000-0080-0900-0020-5000-0080-0900-0020-5000-0090-0900-0020-5000-00A0-0900-0020-5000-00A0-0900-0020-5000-00B0-0900-0020-5000-00C0-0900-0020-5000-00C0-0900-0020-5000-00E0-6E80-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+81/91 Testing: SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<70-0B00-0020-5000-0080-0B00-0020-5000-0080-0B00-0020-5000-0090-0B00-0020-5000-00A0-0B00-0020-5000-00A0-0B00-0020-5000-00B0-0B00-0020-5000-00C0-0B00-0020-5000-00C0-0B00-0020-5000-0000-7080-2AD3-55...
+81/91 Test: SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<70-0B00-0020-5000-0080-0B00-0020-5000-0080-0B00-0020-5000-0090-0B00-0020-5000-00A0-0B00-0020-5000-00A0-0B00-0020-5000-00B0-0B00-0020-5000-00C0-0B00-0020-5000-00C0-0B00-0020-5000-0000-7080-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<70-0B00-0020-5000-0080-0B00-0020-5000-0080-0B00-0020-5000-0090-0B00-0020-5000-00A0-0B00-0020-5000-00A0-0B00-0020-5000-00B0-0B00-0020-5000-00C0-0B00-0020-5000-00C0-0B00-0020-5000-0000-7080-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext
+[       OK ] SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<70-0B00-0020-5000-0080-0B00-0020-5000-0080-0B00-0020-5000-0090-0B00-0020-5000-00A0-0B00-0020-5000-00A0-0B00-0020-5000-00B0-0B00-0020-5000-00C0-0B00-0020-5000-00C0-0B00-0020-5000-0000-7080-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.DecryptBlockReversesEncrypt/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<70-0B00-0020-5000-0080-0B00-0020-5000-0080-0B00-0020-5000-0090-0B00-0020-5000-00A0-0B00-0020-5000-00A0-0B00-0020-5000-00B0-0B00-0020-5000-00C0-0B00-0020-5000-00C0-0B00-0020-5000-0000-7080-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+82/91 Testing: SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<10-0E00-0020-5000-0020-0E00-0020-5000-0020-0E00-0020-5000-0030-0E00-0020-5000-0040-0E00-0020-5000-0040-0E00-0020-5000-0050-0E00-0020-5000-0060-0E00-0020-5000-0060-0E00-0020-5000-00E0-6E80-2AD3-55...
+82/91 Test: SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<10-0E00-0020-5000-0020-0E00-0020-5000-0020-0E00-0020-5000-0030-0E00-0020-5000-0040-0E00-0020-5000-0040-0E00-0020-5000-0050-0E00-0020-5000-0060-0E00-0020-5000-0060-0E00-0020-5000-00E0-6E80-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<10-0E00-0020-5000-0020-0E00-0020-5000-0020-0E00-0020-5000-0030-0E00-0020-5000-0040-0E00-0020-5000-0040-0E00-0020-5000-0050-0E00-0020-5000-0060-0E00-0020-5000-0060-0E00-0020-5000-00E0-6E80-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt
+[       OK ] SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<10-0E00-0020-5000-0020-0E00-0020-5000-0020-0E00-0020-5000-0030-0E00-0020-5000-0040-0E00-0020-5000-0040-0E00-0020-5000-0050-0E00-0020-5000-0060-0E00-0020-5000-0060-0E00-0020-5000-00E0-6E80-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/GM_T_0002_2012_standard_single_block_encrypt#GetParam()=80-byteobject<10-0E00-0020-5000-0020-0E00-0020-5000-0020-0E00-0020-5000-0030-0E00-0020-5000-0040-0E00-0020-5000-0040-0E00-0020-5000-0050-0E00-0020-5000-0060-0E00-0020-5000-0060-0E00-0020-5000-00E0-6E80-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+83/91 Testing: SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<F0-0F00-0020-5000-0000-1000-0020-5000-0000-1000-0020-5000-0010-1000-0020-5000-0020-1000-0020-5000-0020-1000-0020-5000-0030-1000-0020-5000-0040-1000-0020-5000-0040-1000-0020-5000-0000-7080-2AD3-55...
+83/91 Test: SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<F0-0F00-0020-5000-0000-1000-0020-5000-0000-1000-0020-5000-0010-1000-0020-5000-0020-1000-0020-5000-0020-1000-0020-5000-0030-1000-0020-5000-0040-1000-0020-5000-0040-1000-0020-5000-0000-7080-2AD3-55...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<F0-0F00-0020-5000-0000-1000-0020-5000-0000-1000-0020-5000-0010-1000-0020-5000-0020-1000-0020-5000-0020-1000-0020-5000-0030-1000-0020-5000-0040-1000-0020-5000-0040-1000-0020-5000-0000-7080-2AD3-55..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4BlockVectors/SM4BlockTest
+[ RUN      ] SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext
+[       OK ] SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext (0 ms)
+[----------] 1 test from SM4BlockVectors/SM4BlockTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<F0-0F00-0020-5000-0000-1000-0020-5000-0000-1000-0020-5000-0010-1000-0020-5000-0020-1000-0020-5000-0020-1000-0020-5000-0030-1000-0020-5000-0040-1000-0020-5000-0040-1000-0020-5000-0000-7080-2AD3-55..." end time: May 18 18:56 CST
+"SM4BlockVectors/SM4BlockTest.DecryptBlockOfKnownCiphertext/SM4_all_zero_key__all_zero_plaintext#GetParam()=80-byteobject<F0-0F00-0020-5000-0000-1000-0020-5000-0000-1000-0020-5000-0010-1000-0020-5000-0020-1000-0020-5000-0020-1000-0020-5000-0030-1000-0020-5000-0040-1000-0020-5000-0040-1000-0020-5000-0000-7080-2AD3-55..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+84/91 Testing: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_#GetParam()=104-byteobject<D0-1200-0020-5000-00E0-1200-0020-5000-00E0-1200-0020-5000-00F0-1200-0020-5000-0000-1300-0020-5000-0000-1300-0020-5000-0010-1300-0020-5000-0020-1300-0020-5000-0020-1300-0020-5000-0030-1300-0020-50...
+84/91 Test: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_#GetParam()=104-byteobject<D0-1200-0020-5000-00E0-1200-0020-5000-00E0-1200-0020-5000-00F0-1200-0020-5000-0000-1300-0020-5000-0000-1300-0020-5000-0010-1300-0020-5000-0020-1300-0020-5000-0020-1300-0020-5000-0030-1300-0020-50...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_#GetParam()=104-byteobject<D0-1200-0020-5000-00E0-1200-0020-5000-00E0-1200-0020-5000-00F0-1200-0020-5000-0000-1300-0020-5000-0000-1300-0020-5000-0010-1300-0020-5000-0020-1300-0020-5000-0020-1300-0020-5000-0030-1300-0020-50..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4CTRVectors/SM4CTRTest
+[ RUN      ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_
+[       OK ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_ (0 ms)
+[----------] 1 test from SM4CTRVectors/SM4CTRTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_#GetParam()=104-byteobject<D0-1200-0020-5000-00E0-1200-0020-5000-00E0-1200-0020-5000-00F0-1200-0020-5000-0000-1300-0020-5000-0000-1300-0020-5000-0010-1300-0020-5000-0020-1300-0020-5000-0020-1300-0020-5000-0030-1300-0020-50..." end time: May 18 18:56 CST
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_single_block__16_bytes_#GetParam()=104-byteobject<D0-1200-0020-5000-00E0-1200-0020-5000-00E0-1200-0020-5000-00F0-1200-0020-5000-0000-1300-0020-5000-0000-1300-0020-5000-0010-1300-0020-5000-0020-1300-0020-5000-0020-1300-0020-5000-0030-1300-0020-50..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+85/91 Testing: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_#GetParam()=104-byteobject<D0-1500-0020-5000-00E0-1500-0020-5000-00E0-1500-0020-5000-00F0-1500-0020-5000-0000-1600-0020-5000-0000-1600-0020-5000-00C0-1600-0030-5000-00E0-1600-0030-5000-00E0-1600-0030-5000-00F0-1600-0030-50...
+85/91 Test: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_#GetParam()=104-byteobject<D0-1500-0020-5000-00E0-1500-0020-5000-00E0-1500-0020-5000-00F0-1500-0020-5000-0000-1600-0020-5000-0000-1600-0020-5000-00C0-1600-0030-5000-00E0-1600-0030-5000-00E0-1600-0030-5000-00F0-1600-0030-50...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_#GetParam()=104-byteobject<D0-1500-0020-5000-00E0-1500-0020-5000-00E0-1500-0020-5000-00F0-1500-0020-5000-0000-1600-0020-5000-0000-1600-0020-5000-00C0-1600-0030-5000-00E0-1600-0030-5000-00E0-1600-0030-5000-00F0-1600-0030-50..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4CTRVectors/SM4CTRTest
+[ RUN      ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_
+[       OK ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_ (0 ms)
+[----------] 1 test from SM4CTRVectors/SM4CTRTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_#GetParam()=104-byteobject<D0-1500-0020-5000-00E0-1500-0020-5000-00E0-1500-0020-5000-00F0-1500-0020-5000-0000-1600-0020-5000-0000-1600-0020-5000-00C0-1600-0030-5000-00E0-1600-0030-5000-00E0-1600-0030-5000-00F0-1600-0030-50..." end time: May 18 18:56 CST
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_two_full_blocks__32_bytes_#GetParam()=104-byteobject<D0-1500-0020-5000-00E0-1500-0020-5000-00E0-1500-0020-5000-00F0-1500-0020-5000-0000-1600-0020-5000-0000-1600-0020-5000-00C0-1600-0030-5000-00E0-1600-0030-5000-00E0-1600-0030-5000-00F0-1600-0030-50..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+86/91 Testing: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_#GetParam()=104-byteobject<50-1700-0020-5000-0060-1700-0020-5000-0060-1700-0020-5000-0070-1700-0020-5000-0080-1700-0020-5000-0080-1700-0020-5000-0030-1900-0030-5000-0044-1900-0030-5000-0044-1900-0030-5000-0060-1900-0030-50...
+86/91 Test: SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_#GetParam()=104-byteobject<50-1700-0020-5000-0060-1700-0020-5000-0060-1700-0020-5000-0070-1700-0020-5000-0080-1700-0020-5000-0080-1700-0020-5000-0030-1900-0030-5000-0044-1900-0030-5000-0044-1900-0030-5000-0060-1900-0030-50...
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_standard" "--gtest_filter=SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_#GetParam()=104-byteobject<50-1700-0020-5000-0060-1700-0020-5000-0060-1700-0020-5000-0070-1700-0020-5000-0080-1700-0020-5000-0080-1700-0020-5000-0030-1900-0030-5000-0044-1900-0030-5000-0044-1900-0030-5000-0060-1900-0030-50..." start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4CTRVectors/SM4CTRTest
+[ RUN      ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_
+[       OK ] SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_ (0 ms)
+[----------] 1 test from SM4CTRVectors/SM4CTRTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.07 sec
+----------------------------------------------------------
+Test Passed.
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_#GetParam()=104-byteobject<50-1700-0020-5000-0060-1700-0020-5000-0060-1700-0020-5000-0070-1700-0020-5000-0080-1700-0020-5000-0080-1700-0020-5000-0030-1900-0030-5000-0044-1900-0030-5000-0044-1900-0030-5000-0060-1900-0030-50..." end time: May 18 18:56 CST
+"SM4CTRVectors/SM4CTRTest.EncryptCTRMatchesKnownVector/SM4_CTR_partial_final_block__20_bytes_#GetParam()=104-byteobject<50-1700-0020-5000-0060-1700-0020-5000-0060-1700-0020-5000-0070-1700-0020-5000-0080-1700-0020-5000-0080-1700-0020-5000-0030-1900-0030-5000-0044-1900-0030-5000-0044-1900-0030-5000-0060-1900-0030-50..." time elapsed: 00:00:00
+----------------------------------------------------------
+
+87/91 Testing: SM4AVX2AlignTest.LoadStore256BytesNoSegfault
+87/91 Test: SM4AVX2AlignTest.LoadStore256BytesNoSegfault
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency" "--gtest_filter=SM4AVX2AlignTest.LoadStore256BytesNoSegfault" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4AVX2AlignTest.LoadStore256BytesNoSegfault" start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4AVX2AlignTest.LoadStore256BytesNoSegfault
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4AVX2AlignTest
+[ RUN      ] SM4AVX2AlignTest.LoadStore256BytesNoSegfault
+[       OK ] SM4AVX2AlignTest.LoadStore256BytesNoSegfault (11 ms)
+[----------] 1 test from SM4AVX2AlignTest (11 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (11 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"SM4AVX2AlignTest.LoadStore256BytesNoSegfault" end time: May 18 18:56 CST
+"SM4AVX2AlignTest.LoadStore256BytesNoSegfault" time elapsed: 00:00:00
+----------------------------------------------------------
+
+88/91 Testing: SM4AVX2AlignTest.MisalignedSourceDoesNotCrash
+88/91 Test: SM4AVX2AlignTest.MisalignedSourceDoesNotCrash
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency" "--gtest_filter=SM4AVX2AlignTest.MisalignedSourceDoesNotCrash" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4AVX2AlignTest.MisalignedSourceDoesNotCrash" start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4AVX2AlignTest.MisalignedSourceDoesNotCrash
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4AVX2AlignTest
+[ RUN      ] SM4AVX2AlignTest.MisalignedSourceDoesNotCrash
+[       OK ] SM4AVX2AlignTest.MisalignedSourceDoesNotCrash (0 ms)
+[----------] 1 test from SM4AVX2AlignTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"SM4AVX2AlignTest.MisalignedSourceDoesNotCrash" end time: May 18 18:56 CST
+"SM4AVX2AlignTest.MisalignedSourceDoesNotCrash" time elapsed: 00:00:00
+----------------------------------------------------------
+
+89/91 Testing: SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB
+89/91 Test: SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_consistency" "--gtest_filter=SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB" start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4AVX2ConsistencyTest
+[ RUN      ] SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB
+[       OK ] SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB (25 ms)
+[----------] 1 test from SM4AVX2ConsistencyTest (25 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (25 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB" end time: May 18 18:56 CST
+"SM4AVX2ConsistencyTest.EncryptCTRMatchesScalarBaseline1MB" time elapsed: 00:00:00
+----------------------------------------------------------
+
+90/91 Testing: SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth
+90/91 Test: SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_counter" "--gtest_filter=SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth" start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4AVX2CounterTest
+[ RUN      ] SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth
+[       OK ] SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth (0 ms)
+[----------] 1 test from SM4AVX2CounterTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth" end time: May 18 18:56 CST
+"SM4AVX2CounterTest.Generate16CountersMatchesScalarGroundTruth" time elapsed: 00:00:00
+----------------------------------------------------------
+
+91/91 Testing: SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth
+91/91 Test: SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth
+Command: "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_sbox" "--gtest_filter=SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth" "--gtest_also_run_disabled_tests"
+Directory: /mnt/d/MyCryptoEngine/build/tests
+"SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth" start time: May 18 18:56 CST
+Output:
+----------------------------------------------------------
+Running main() from /mnt/d/MyCryptoEngine/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SM4AVX2SboxTest
+[ RUN      ] SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth
+[       OK ] SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth (0 ms)
+[----------] 1 test from SM4AVX2SboxTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth" end time: May 18 18:56 CST
+"SM4AVX2SboxTest.ParallelSbox16MatchesScalarGroundTruth" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 18 18:56 CST
