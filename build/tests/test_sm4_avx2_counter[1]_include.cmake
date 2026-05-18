@@ -1,5 +1,0 @@
-if(EXISTS "/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_counter[1]_tests.cmake")
-  include("/mnt/d/MyCryptoEngine/build/tests/test_sm4_avx2_counter[1]_tests.cmake")
-else()
-  add_test(test_sm4_avx2_counter_NOT_BUILT test_sm4_avx2_counter_NOT_BUILT)
-endif()

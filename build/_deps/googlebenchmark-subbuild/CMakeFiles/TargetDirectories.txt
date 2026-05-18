@@ -1,3 +1,0 @@
-/mnt/d/MyCryptoEngine/build/_deps/googlebenchmark-subbuild/CMakeFiles/googlebenchmark-populate.dir
-/mnt/d/MyCryptoEngine/build/_deps/googlebenchmark-subbuild/CMakeFiles/edit_cache.dir
-/mnt/d/MyCryptoEngine/build/_deps/googlebenchmark-subbuild/CMakeFiles/rebuild_cache.dir

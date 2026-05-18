@@ -1,0 +1,50 @@
+# ── Build outputs ──
+build/
+out/
+bin/
+_deps/
+
+# ── Compiled intermediates & binaries ──
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.out
+*.app
+*.suo
+*.sdf
+
+# ── IDE & editor caches ──
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Benchmark & test artifacts ──
+*.csv
+*.log
+benchmark_result.*
+
+# ── CMake generated files (when not using out-of-source build) ──
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+CTestTestfile.cmake
+Testing/
+
+# ── Misc ──
+*.tmp
+*.temp
+core
