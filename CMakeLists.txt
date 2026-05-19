@@ -32,6 +32,9 @@ add_library(sm4_avx2 STATIC
     src/sm4_avx2.cpp
 )
 
+add_executable(sm4_showcase src/main.cpp)
+target_link_libraries(sm4_showcase sm4_avx2 sm4_core)
+
 enable_testing()
 add_subdirectory(tests)
 add_subdirectory(benchmarks)
