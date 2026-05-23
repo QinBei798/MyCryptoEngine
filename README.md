@@ -25,6 +25,7 @@
 - **严苛内存对齐** — 所有 AVX2 缓冲区 `alignas(32)` 对齐，`_mm_malloc` 分配，零 SegFault
 - **逐字节一致性验证** — 1MB CTR 加密输出与标量基线 `SM4Standard` 逐字节一致
 - **GM/T 0002-2012 合规** — 全部国密标准测试向量通过
+- **安全文件存储** — `SM4X` 自包含加密容器格式（独立 File IV + Magic Bytes 校验），一键加解密任意文件
 
 ---
 
@@ -120,6 +121,8 @@ ctest -R "SM4" --output-on-failure
   [2]  Decrypt — hex ciphertext back to plaintext
   [3]  Benchmark — SM4Standard vs SM4AVX2 live speedrun
   [4]  Exit
+  [5]  Encrypt File — secure storage to .sm4x container
+  [6]  Decrypt File — extract from .sm4x container
 ──────────────────────────────────────────────────────────────────────
   Choice >
 ```
@@ -132,6 +135,8 @@ ctest -R "SM4" --output-on-failure
 | **[2] Decrypt** | 粘贴十六进制密文 → 还原明文 | **带容错的 Hex 自动解析器** — 自动忽略空格、冒号、`0x` 前缀；奇数长度/非法字符即时报错 |
 | **[3] Benchmark** | 自定义数据量（1–4096 MB）→ 标量 vs AVX2 对决 | `_mm_malloc` 32 字节对齐分配，高精度 `std::chrono` 计时，加速比 + 吞吐量表，`memcmp` 逐字节一致性校验 |
 | **[4] Exit** | 优雅退出 | — |
+| **[5] Encrypt File** | 读取任意文件 → SM4-CTR 加密写入 `.sm4x` 容器 | 独立随机 File IV，`SM4X` Magic Bytes 头格式，含源路径/大小/耗时的极客风结果表 |
+| **[6] Decrypt File** | 解析 `.sm4x` 容器 → 解密还原原始文件 | Magic Bytes 格式校验 + IV 提取，自动生成 `_decrypted` 后缀防覆盖 |
 
 ### Hex 解析器容错示例
 
@@ -142,6 +147,24 @@ ctest -R "SM4" --output-on-failure
 ```
 
 支持空格分隔、冒号分隔、`0x` 前缀、大小写混合、无分隔连续串 — 均可正确解析。
+
+### SM4X 安全文件格式
+
+加密文件使用 `SM4X` 自包含容器格式，无需外部 IV 即可完成解密：
+
+```
+┌────────────────────┬──────────────────────┬──────────────────────────┐
+│  Magic "SM4X" (4B) │  File IV (16 bytes)  │  Ciphertext (N bytes)    │
+└────────────────────┴──────────────────────┴──────────────────────────┘
+```
+
+| 字段 | 偏移 | 大小 | 描述 |
+|------|------|------|------|
+| Magic Bytes | 0 | 4 B | 固定 `SM4X` (0x53 0x4D 0x34 0x58)，用于格式校验 |
+| File IV | 4 | 16 B | 该文件专属的随机初始化向量，独立于 Session IV |
+| Ciphertext | 20 | N B | SM4-CTR 模式密文，与明文等长（无 padding） |
+
+CTR 模式加解密使用同一函数，解密时直接对密文调用 `encrypt_ctr(file_iv, ciphertext)` 即可还原。
 
 ---
 
@@ -154,7 +177,8 @@ MyCryptoEngine/
 │   └── sm4_avx2.h            # SM4AVX2 SIMD 加速引擎
 ├── src/
 │   ├── sm4_standard.cpp      # 标量: 逐块 CTR 加密 + 大端序进位
-│   └── sm4_avx2.cpp          # AVX2: 16路并行 32 轮 SM4 流水线
+│   ├── sm4_avx2.cpp          # AVX2: 16路并行 32 轮 SM4 流水线
+│   └── main.cpp              # 交互式 REPL 终端 + SM4X 文件安全存储
 ├── tests/
 │   ├── test_sm4_standard.cpp       # 国密标准向量 (加密/解密/CTR)
 │   ├── test_sm4_avx2_consistency.cpp   # 1MB 标量 vs AVX2 逐字节比对

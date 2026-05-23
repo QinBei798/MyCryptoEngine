@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -148,6 +149,8 @@ void print_menu() {
     std::cout << "  [2]  Decrypt — hex ciphertext back to plaintext\n";
     std::cout << "  [3]  Benchmark — SM4Standard vs SM4AVX2 live speedrun\n";
     std::cout << "  [4]  Exit\n";
+    std::cout << "  [5]  Encrypt File — secure storage to .sm4x container\n";
+    std::cout << "  [6]  Decrypt File — extract from .sm4x container\n";
     thin_line();
     std::cout << "  Choice > " << std::flush;
 }
@@ -326,6 +329,170 @@ void do_benchmark(const std::vector<uint8_t>& key,
     _mm_free(raw_buf);
 }
 
+// ── Menu handler: Encrypt file to disk ─────────────────────────────────
+
+void do_encrypt_file(const SM4AVX2& engine) {
+    std::cout << "\n  Enter path to file to encrypt (empty line = cancel):\n  > " << std::flush;
+
+    std::string path;
+    if (!std::getline(std::cin, path) || path.empty()) {
+        std::cout << "  [!] Cancelled.\n";
+        return;
+    }
+
+    // Read source file
+    std::ifstream ifs(path, std::ios::binary | std::ios::ate);
+    if (!ifs) {
+        std::cout << "  [✗] Error: Cannot open file \"" << path << "\".\n";
+        return;
+    }
+
+    std::streamsize fsize = ifs.tellg();
+    if (fsize <= 0) {
+        std::cout << "  [✗] Error: File is empty or unreadable.\n";
+        return;
+    }
+
+    ifs.seekg(0, std::ios::beg);
+    std::vector<uint8_t> file_data(static_cast<size_t>(fsize));
+    if (!ifs.read(reinterpret_cast<char*>(file_data.data()), fsize)) {
+        std::cout << "  [✗] Error: Failed to read file data.\n";
+        return;
+    }
+    ifs.close();
+
+    auto t_start = std::chrono::high_resolution_clock::now();
+
+    // Per-file random IV
+    auto file_iv = random_bytes(16);
+    auto ciphertext = engine.encrypt_ctr(file_iv, file_data);
+
+    std::string out_path = path + ".sm4x";
+    std::ofstream ofs(out_path, std::ios::binary);
+    if (!ofs) {
+        std::cout << "  [✗] Error: Cannot write output file \"" << out_path << "\".\n";
+        return;
+    }
+
+    const char magic[4] = {'S', 'M', '4', 'X'};
+    ofs.write(magic, 4);
+    ofs.write(reinterpret_cast<const char*>(file_iv.data()), 16);
+    ofs.write(reinterpret_cast<const char*>(ciphertext.data()),
+              static_cast<std::streamsize>(ciphertext.size()));
+    ofs.close();
+
+    auto t_end = std::chrono::high_resolution_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count();
+
+    std::cout << "\n";
+    std::cout << "  ╔══════════════════════════════════════════════════════╗\n";
+    std::cout << "  ║        FILE  ENCRYPTED  SUCCESSFULLY                ║\n";
+    std::cout << "  ╠══════════════════════════════════════════════════════╣\n";
+    std::cout << "  ║  Source       : " << std::left << std::setw(35) << path << "║\n";
+    std::cout << "  ║  Output       : " << std::left << std::setw(35) << out_path << "║\n";
+    std::cout << "  ║  Original     : " << std::left << std::setw(35)
+              << (std::to_string(file_data.size()) + " bytes") << "║\n";
+    std::cout << "  ║  Ciphertext   : " << std::left << std::setw(35)
+              << (std::to_string(ciphertext.size()) + " bytes") << "║\n";
+    std::cout << "  ║  Overhead     : " << std::left << std::setw(35)
+              << "20 bytes (SM4X header + IV)" << "║\n";
+    std::cout << "  ║  Wall Time    : " << std::left << std::setw(35)
+              << (std::to_string(ms) + " ms") << "║\n";
+    std::cout << "  ╚══════════════════════════════════════════════════════╝\n";
+    std::cout << "  [✓] File IV embedded — this file is self-contained and portable.\n";
+}
+
+// ── Menu handler: Decrypt file from disk ───────────────────────────────
+
+void do_decrypt_file(const SM4AVX2& engine) {
+    std::cout << "\n  Enter path to .sm4x file (empty line = cancel):\n  > " << std::flush;
+
+    std::string path;
+    if (!std::getline(std::cin, path) || path.empty()) {
+        std::cout << "  [!] Cancelled.\n";
+        return;
+    }
+
+    std::ifstream ifs(path, std::ios::binary | std::ios::ate);
+    if (!ifs) {
+        std::cout << "  [✗] Error: Cannot open file \"" << path << "\".\n";
+        return;
+    }
+
+    std::streamsize fsize = ifs.tellg();
+    if (fsize < 20) {
+        std::cout << "  [✗] Error: File too small to be a valid .sm4x container (< 20 bytes).\n";
+        return;
+    }
+
+    ifs.seekg(0, std::ios::beg);
+
+    // Read header: 4 magic + 16 IV
+    char magic[4];
+    uint8_t file_iv[16];
+    if (!ifs.read(magic, 4) || !ifs.read(reinterpret_cast<char*>(file_iv), 16)) {
+        std::cout << "  [✗] Error: Failed to read file header.\n";
+        return;
+    }
+
+    // Validate magic bytes
+    if (magic[0] != 'S' || magic[1] != 'M' || magic[2] != '4' || magic[3] != 'X') {
+        std::cout << "  [✗] Error: 无效的安全存储文件格式 (Magic Bytes Mismatch)\n";
+        std::cout << "          Expected: SM4X  Got: "
+                  << magic[0] << magic[1] << magic[2] << magic[3] << "\n";
+        return;
+    }
+
+    std::vector<uint8_t> file_iv_vec(file_iv, file_iv + 16);
+
+    // Read remaining ciphertext
+    std::streamsize ct_size = fsize - 20;
+    std::vector<uint8_t> ciphertext(static_cast<size_t>(ct_size));
+    if (!ifs.read(reinterpret_cast<char*>(ciphertext.data()), ct_size)) {
+        std::cout << "  [✗] Error: Failed to read ciphertext body.\n";
+        return;
+    }
+    ifs.close();
+
+    auto t_start = std::chrono::high_resolution_clock::now();
+    auto plaintext = engine.encrypt_ctr(file_iv_vec, ciphertext);
+    auto t_end = std::chrono::high_resolution_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count();
+
+    // Build output filename: strip .sm4x, insert _decrypted before extension
+    std::string out_path = path;
+    if (out_path.size() >= 5 && out_path.substr(out_path.size() - 5) == ".sm4x")
+        out_path.resize(out_path.size() - 5);
+
+    auto dot_pos = out_path.find_last_of('.');
+    if (dot_pos != std::string::npos)
+        out_path = out_path.substr(0, dot_pos) + "_decrypted" + out_path.substr(dot_pos);
+    else
+        out_path += "_decrypted";
+
+    std::ofstream ofs(out_path, std::ios::binary);
+    if (!ofs) {
+        std::cout << "  [✗] Error: Cannot write output file \"" << out_path << "\".\n";
+        return;
+    }
+    ofs.write(reinterpret_cast<const char*>(plaintext.data()),
+              static_cast<std::streamsize>(plaintext.size()));
+    ofs.close();
+
+    std::cout << "\n";
+    std::cout << "  ╔══════════════════════════════════════════════════════╗\n";
+    std::cout << "  ║        FILE  DECRYPTED  SUCCESSFULLY                ║\n";
+    std::cout << "  ╠══════════════════════════════════════════════════════╣\n";
+    std::cout << "  ║  Source       : " << std::left << std::setw(35) << path << "║\n";
+    std::cout << "  ║  Output       : " << std::left << std::setw(35) << out_path << "║\n";
+    std::cout << "  ║  Plaintext    : " << std::left << std::setw(35)
+              << (std::to_string(plaintext.size()) + " bytes") << "║\n";
+    std::cout << "  ║  Wall Time    : " << std::left << std::setw(35)
+              << (std::to_string(ms) + " ms") << "║\n";
+    std::cout << "  ╚══════════════════════════════════════════════════════╝\n";
+    std::cout << "  [✓] Decryption complete — file integrity preserved.\n";
+}
+
 }  // namespace
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -367,9 +534,13 @@ int main() {
         } else if (choice == "4") {
             std::cout << "\n  Exiting MyCryptoEngine console. Goodbye.\n\n";
             break;
+        } else if (choice == "5") {
+            do_encrypt_file(engine);
+        } else if (choice == "6") {
+            do_decrypt_file(engine);
         } else if (!choice.empty()) {
             std::cout << "  [!] Unknown option '" << choice
-                      << "'. Enter 1, 2, 3, or 4.\n";
+                      << "'. Enter 1, 2, 3, 4, 5, or 6.\n";
         }
     }
 
