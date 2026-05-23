@@ -24,6 +24,8 @@ FetchContent_MakeAvailable(googlebenchmark)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+find_package(OpenSSL REQUIRED)
+
 add_library(sm4_core STATIC
     src/sm4_standard.cpp
 )
@@ -32,8 +34,13 @@ add_library(sm4_avx2 STATIC
     src/sm4_avx2.cpp
 )
 
+add_library(crypto_utils STATIC
+    src/crypto_utils.cpp
+)
+target_link_libraries(crypto_utils OpenSSL::Crypto)
+
 add_executable(sm4_showcase src/main.cpp)
-target_link_libraries(sm4_showcase sm4_avx2 sm4_core)
+target_link_libraries(sm4_showcase sm4_avx2 sm4_core crypto_utils)
 
 enable_testing()
 add_subdirectory(tests)

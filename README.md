@@ -25,7 +25,7 @@
 - **严苛内存对齐** — 所有 AVX2 缓冲区 `alignas(32)` 对齐，`_mm_malloc` 分配，零 SegFault
 - **逐字节一致性验证** — 1MB CTR 加密输出与标量基线 `SM4Standard` 逐字节一致
 - **GM/T 0002-2012 合规** — 全部国密标准测试向量通过
-- **安全文件存储** — `SM4X` 自包含加密容器格式（独立 File IV + Magic Bytes 校验），一键加解密任意文件
+- **安全文件存储 V2** — `SM4X` 加密容器，PBKDF2-SM3 口令派生密钥 (100k iter) + HMAC-SM3 完整性校验 (Encrypt-then-MAC)，防篡改/防密码错误
 
 ---
 
@@ -53,6 +53,7 @@ SM4AVX2      ██████████████████████�
 - **编译器:** GCC 8+ / Clang 10+ (需 `-mavx2` 支持)
 - **CMake:** ≥ 3.20
 - **C++ 标准:** C++17
+- **依赖:** OpenSSL ≥ 3.0 (libssl-dev)，用于 PBKDF2-SM3 密钥派生与 HMAC-SM3 完整性校验
 
 ### 构建 & 测试
 
@@ -135,8 +136,8 @@ ctest -R "SM4" --output-on-failure
 | **[2] Decrypt** | 粘贴十六进制密文 → 还原明文 | **带容错的 Hex 自动解析器** — 自动忽略空格、冒号、`0x` 前缀；奇数长度/非法字符即时报错 |
 | **[3] Benchmark** | 自定义数据量（1–4096 MB）→ 标量 vs AVX2 对决 | `_mm_malloc` 32 字节对齐分配，高精度 `std::chrono` 计时，加速比 + 吞吐量表，`memcmp` 逐字节一致性校验 |
 | **[4] Exit** | 优雅退出 | — |
-| **[5] Encrypt File** | 读取任意文件 → SM4-CTR 加密写入 `.sm4x` 容器 | 独立随机 File IV，`SM4X` Magic Bytes 头格式，含源路径/大小/耗时的极客风结果表 |
-| **[6] Decrypt File** | 解析 `.sm4x` 容器 → 解密还原原始文件 | Magic Bytes 格式校验 + IV 提取，自动生成 `_decrypted` 后缀防覆盖 |
+| **[5] Encrypt File** | 口令加密任意文件 → SM4X V2 容器 | PBKDF2-SM3 (100k iter) 口令派生密钥，随机 Salt + IV，HMAC-SM3 签名 (Encrypt-then-MAC) |
+| **[6] Decrypt File** | 口令解密 `.sm4x` → 完整性校验 + 还原 | `CRYPTO_memcmp` 恒定时间 HMAC 比对，错误密码/篡改文件立即拦截 (FATAL) |
 
 ### Hex 解析器容错示例
 
@@ -148,23 +149,28 @@ ctest -R "SM4" --output-on-failure
 
 支持空格分隔、冒号分隔、`0x` 前缀、大小写混合、无分隔连续串 — 均可正确解析。
 
-### SM4X 安全文件格式
+### SM4X V2 安全文件格式
 
-加密文件使用 `SM4X` 自包含容器格式，无需外部 IV 即可完成解密：
+V2 格式引入 PBKDF2 口令派生与 HMAC-SM3 完整性校验，具备防篡改能力：
 
 ```
-┌────────────────────┬──────────────────────┬──────────────────────────┐
-│  Magic "SM4X" (4B) │  File IV (16 bytes)  │  Ciphertext (N bytes)    │
-└────────────────────┴──────────────────────┴──────────────────────────┘
+┌──────────┬───────────────┬──────────────┬──────────────────┬─────────────────┐
+│ SM4X (4B)│  Salt (16B)   │  IV (16B)    │  Ciphertext (N)  │  HMAC-SM3 (32B) │
+└──────────┴───────────────┴──────────────┴──────────────────┴─────────────────┘
+           ←──────────── Header (36B) ────────────→                    ← Footer →
+           ←───────────────── HMAC covers this ───────────────────→
 ```
 
 | 字段 | 偏移 | 大小 | 描述 |
 |------|------|------|------|
-| Magic Bytes | 0 | 4 B | 固定 `SM4X` (0x53 0x4D 0x34 0x58)，用于格式校验 |
-| File IV | 4 | 16 B | 该文件专属的随机初始化向量，独立于 Session IV |
-| Ciphertext | 20 | N B | SM4-CTR 模式密文，与明文等长（无 padding） |
+| Magic Bytes | 0 | 4 B | 固定 `SM4X` (0x53 0x4D 0x34 0x58)，格式校验 |
+| Salt | 4 | 16 B | 随机 Salt，用于 PBKDF2-SM3 密钥派生 (100,000 iterations) |
+| File IV | 20 | 16 B | 该文件专属随机 IV，用于 SM4-CTR |
+| Ciphertext | 36 | N B | SM4-CTR 密文，与明文等长 |
+| HMAC-SM3 | 36+N | 32 B | Encrypt-then-MAC，恒定时间比对防时序攻击 |
 
-CTR 模式加解密使用同一函数，解密时直接对密文调用 `encrypt_ctr(file_iv, ciphertext)` 即可还原。
+派生总长度 48 字节：前 16 B 用作 SM4 密钥，后 32 B 用作 HMAC-SM3 密钥。
+解密时 HMAC 校验失败（错误密码或篡改）立即拒绝解密，不写入任何文件。
 
 ---
 
@@ -174,11 +180,13 @@ CTR 模式加解密使用同一函数，解密时直接对密文调用 `encrypt_
 MyCryptoEngine/
 ├── include/
 │   ├── sm4_standard.h        # SM4Standard 标量引擎 (基线实现)
-│   └── sm4_avx2.h            # SM4AVX2 SIMD 加速引擎
+│   ├── sm4_avx2.h            # SM4AVX2 SIMD 加速引擎
+│   └── crypto_utils.h        # PBKDF2-SM3 密钥派生 + HMAC-SM3 声明
 ├── src/
 │   ├── sm4_standard.cpp      # 标量: 逐块 CTR 加密 + 大端序进位
 │   ├── sm4_avx2.cpp          # AVX2: 16路并行 32 轮 SM4 流水线
-│   └── main.cpp              # 交互式 REPL 终端 + SM4X 文件安全存储
+│   ├── crypto_utils.cpp      # PBKDF2-SM3 + HMAC-SM3 (OpenSSL EVP)
+│   └── main.cpp              # 交互式 REPL 终端 + SM4X V2 安全存储
 ├── tests/
 │   ├── test_sm4_standard.cpp       # 国密标准向量 (加密/解密/CTR)
 │   ├── test_sm4_avx2_consistency.cpp   # 1MB 标量 vs AVX2 逐字节比对
@@ -214,7 +222,7 @@ Counter (BE) → BSWAP32 (BE→LE) → 32-round SM4 (2 batches × 8 blocks)
 ## 📐 设计原则
 
 - **TDD 驱动** — 每个核心函数先写 RED 测试，验证失败，再实现 GREEN，全程可追溯
-- **零外部依赖** — 仅需 Intel AVX2 intrinsic (`immintrin.h`)，无第三方加密库
+- **最小外部依赖** — 核心 SM4 零依赖 (仅 AVX2 intrinsic)；安全存储模块依赖 OpenSSL 3.0+ 提供 PBKDF2/HMAC-SM3
 - **微观提交** — 每个 Phase 独立 plan → 实现 → review → commit
 
 ---
