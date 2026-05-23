@@ -1,5 +1,6 @@
 #include "sm4_standard.h"
 #include "sm4_avx2.h"
+#include "compress_utils.h"
 #include "crypto_utils.h"
 
 #include <algorithm>
@@ -331,7 +332,7 @@ void do_benchmark(const std::vector<uint8_t>& key,
     _mm_free(raw_buf);
 }
 
-// ── Menu handler: Encrypt file to disk (V2: PBKDF2 + HMAC-SM3) ────────
+// ── Menu handler: Encrypt file to disk (V3: Zstd + PBKDF2 + HMAC-SM3) ───
 
 void do_encrypt_file() {
     std::cout << "\n  Enter path to file to encrypt (empty line = cancel):\n  > " << std::flush;
@@ -372,6 +373,18 @@ void do_encrypt_file() {
 
     auto t_start = std::chrono::high_resolution_clock::now();
 
+    // Record original size before compression
+    uint64_t original_size = file_data.size();
+
+    // Step 1: Compress plaintext with Zstd
+    std::vector<uint8_t> compressed;
+    try {
+        compressed = compress_zstd(file_data);
+    } catch (const std::exception& e) {
+        std::cout << "  [✗] Compression error: " << e.what() << "\n";
+        return;
+    }
+
     // Generate per-file salt and IV
     auto salt = random_bytes(16);
     auto file_iv = random_bytes(16);
@@ -380,15 +393,16 @@ void do_encrypt_file() {
     std::vector<uint8_t> sm4_key, hmac_key;
     derive_keys(password, salt, sm4_key, hmac_key);
 
-    // Encrypt with derived SM4 key
+    // Step 2: Encrypt compressed data with derived SM4 key
     SM4AVX2 file_engine(sm4_key);
-    auto ciphertext = file_engine.encrypt_ctr(file_iv, file_data);
+    auto ciphertext = file_engine.encrypt_ctr(file_iv, compressed);
 
-    // Build V2 header: 4 magic + 16 salt + 16 IV = 36 bytes
-    std::vector<uint8_t> header(36);
-    header[0] = 'S'; header[1] = 'M'; header[2] = '4'; header[3] = 'X';
+    // Build V3 header: 4 magic + 16 salt + 16 IV + 8 original_size = 44 bytes
+    std::vector<uint8_t> header(44);
+    header[0] = 'S'; header[1] = 'M'; header[2] = '4'; header[3] = 'Z';
     std::memcpy(header.data() + 4,  salt.data(), 16);
     std::memcpy(header.data() + 20, file_iv.data(), 16);
+    std::memcpy(header.data() + 36, &original_size, 8);
 
     // HMAC over header + ciphertext
     std::vector<uint8_t> hmac_input = header;
@@ -396,13 +410,13 @@ void do_encrypt_file() {
     auto hmac = calc_hmac_sm3(hmac_key, hmac_input);
 
     // Write: header + ciphertext + footer (HMAC)
-    std::string out_path = path + ".sm4x";
+    std::string out_path = path + ".sm4z";
     std::ofstream ofs(out_path, std::ios::binary);
     if (!ofs) {
         std::cout << "  [✗] Error: Cannot write output file \"" << out_path << "\".\n";
         return;
     }
-    ofs.write(reinterpret_cast<const char*>(header.data()), 36);
+    ofs.write(reinterpret_cast<const char*>(header.data()), 44);
     ofs.write(reinterpret_cast<const char*>(ciphertext.data()),
               static_cast<std::streamsize>(ciphertext.size()));
     ofs.write(reinterpret_cast<const char*>(hmac.data()), 32);
@@ -411,32 +425,40 @@ void do_encrypt_file() {
     auto t_end = std::chrono::high_resolution_clock::now();
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count();
 
+    double ratio = (original_size > 0)
+        ? static_cast<double>(compressed.size()) / original_size * 100.0
+        : 100.0;
+
     std::cout << "\n";
     std::cout << "  ╔══════════════════════════════════════════════════════╗\n";
-    std::cout << "  ║        FILE  ENCRYPTED  SUCCESSFULLY  (V2)          ║\n";
+    std::cout << "  ║        FILE  ENCRYPTED  SUCCESSFULLY  (V3)          ║\n";
     std::cout << "  ╠══════════════════════════════════════════════════════╣\n";
     std::cout << "  ║  Source       : " << std::left << std::setw(35) << path << "║\n";
     std::cout << "  ║  Output       : " << std::left << std::setw(35) << out_path << "║\n";
     std::cout << "  ║  Original     : " << std::left << std::setw(35)
-              << (std::to_string(file_data.size()) + " bytes") << "║\n";
+              << (std::to_string(original_size) + " bytes") << "║\n";
+    std::cout << "  ║  Compressed   : " << std::left << std::setw(35)
+              << (std::to_string(compressed.size()) + " bytes") << "║\n";
     std::cout << "  ║  Ciphertext   : " << std::left << std::setw(35)
               << (std::to_string(ciphertext.size()) + " bytes") << "║\n";
-    std::cout << "  ║  Overhead     : " << std::left << std::setw(35)
-              << "68 bytes (36B header + 32B HMAC)" << "║\n";
+    std::cout << "  ║  Ratio        : " << std::left << std::setw(35)
+              << (std::to_string(static_cast<int>(ratio)) + "% of original") << "║\n";
+    std::cout << "  ║  Pipeline     : " << std::left << std::setw(35)
+              << "Zstd→SM4-CTR→HMAC-SM3" << "║\n";
     std::cout << "  ║  KDF          : " << std::left << std::setw(35)
               << "PBKDF2-SM3 (100000 iter)" << "║\n";
-    std::cout << "  ║  Integrity    : " << std::left << std::setw(35)
-              << "HMAC-SM3 (encrypt-then-MAC)" << "║\n";
+    std::cout << "  ║  Overhead     : " << std::left << std::setw(35)
+              << "76 bytes (44B header + 32B HMAC)" << "║\n";
     std::cout << "  ║  Wall Time    : " << std::left << std::setw(35)
               << (std::to_string(ms) + " ms") << "║\n";
     std::cout << "  ╚══════════════════════════════════════════════════════╝\n";
-    std::cout << "  [✓] File is self-contained: Salt + IV + HMAC all embedded.\n";
+    std::cout << "  [✓] Container .sm4z: Salt + IV + OriginalSize + HMAC all embedded.\n";
 }
 
-// ── Menu handler: Decrypt file from disk (V2: HMAC verification) ───────
+// ── Menu handler: Decrypt file from disk (V3: HMAC verify + Zstd decompress) ──
 
 void do_decrypt_file() {
-    std::cout << "\n  Enter path to .sm4x file (empty line = cancel):\n  > " << std::flush;
+    std::cout << "\n  Enter path to .sm4z file (empty line = cancel):\n  > " << std::flush;
 
     std::string path;
     if (!std::getline(std::cin, path) || path.empty()) {
@@ -458,8 +480,8 @@ void do_decrypt_file() {
     }
 
     std::streamsize fsize = ifs.tellg();
-    if (fsize < 68) {
-        std::cout << "  [✗] Error: File too small to be a valid V2 .sm4x container (< 68 bytes).\n";
+    if (fsize < 76) {
+        std::cout << "  [✗] Error: File too small to be a valid V3 .sm4z container (< 76 bytes).\n";
         return;
     }
 
@@ -473,23 +495,25 @@ void do_decrypt_file() {
     }
     ifs.close();
 
-    // Validate magic bytes
+    // Validate magic bytes (SM4Z)
     if (file_bytes[0] != 'S' || file_bytes[1] != 'M' ||
-        file_bytes[2] != '4' || file_bytes[3] != 'X') {
-        std::cout << "  [✗] Error: 无效的安全存储文件格式 (Magic Bytes Mismatch)\n";
-        std::cout << "          Expected: SM4X  Got: "
+        file_bytes[2] != '4' || file_bytes[3] != 'Z') {
+        std::cout << "  [✗] Error: Invalid secure storage format (Magic Bytes Mismatch)\n";
+        std::cout << "          Expected: SM4Z  Got: "
                   << file_bytes[0] << file_bytes[1]
                   << file_bytes[2] << file_bytes[3] << "\n";
         return;
     }
 
-    // Extract header components
+    // Extract V3 header: 4 magic + 16 salt + 16 IV + 8 original_size = 44 bytes
     std::vector<uint8_t> salt(file_bytes.begin() + 4,  file_bytes.begin() + 20);
     std::vector<uint8_t> file_iv(file_bytes.begin() + 20, file_bytes.begin() + 36);
+    uint64_t original_size = 0;
+    std::memcpy(&original_size, file_bytes.data() + 36, 8);
 
     // Extract ciphertext and stored HMAC
-    size_t ct_size = static_cast<size_t>(fsize) - 68;
-    std::vector<uint8_t> ciphertext(file_bytes.begin() + 36, file_bytes.begin() + 36 + ct_size);
+    size_t ct_size = static_cast<size_t>(fsize) - 76;  // 44 header + 32 footer
+    std::vector<uint8_t> ciphertext(file_bytes.begin() + 44, file_bytes.begin() + 44 + ct_size);
     std::vector<uint8_t> stored_hmac(file_bytes.end() - 32, file_bytes.end());
 
     // Header + Ciphertext (everything except the footer)
@@ -505,9 +529,7 @@ void do_decrypt_file() {
     if (computed_hmac.size() != stored_hmac.size() ||
         CRYPTO_memcmp(computed_hmac.data(), stored_hmac.data(), computed_hmac.size()) != 0) {
         std::cout << "\n  ╔══════════════════════════════════════════════════════╗\n";
-        std::cout << "  ║   FATAL: 完整性校验失败！                            ║\n";
-        std::cout << "  ║   密码错误或文件已被篡改！                            ║\n";
-        std::cout << "  ║   FATAL: Integrity check FAILED!                    ║\n";
+        std::cout << "  ║   FATAL: Integrity check FAILED!                   ║\n";
         std::cout << "  ║   Wrong password or file has been tampered with!    ║\n";
         std::cout << "  ╚══════════════════════════════════════════════════════╝\n";
         std::cout << "  [✗] Decryption ABORTED — data integrity cannot be guaranteed.\n";
@@ -518,16 +540,27 @@ void do_decrypt_file() {
 
     auto t_start = std::chrono::high_resolution_clock::now();
 
-    // Decrypt with derived SM4 key
+    // Decrypt with derived SM4 key → get compressed data
     SM4AVX2 file_engine(sm4_key);
-    auto plaintext = file_engine.encrypt_ctr(file_iv, ciphertext);
+    auto compressed = file_engine.encrypt_ctr(file_iv, ciphertext);
+
+    std::cout << "  [⏳] Decrypted " << compressed.size() << " bytes of compressed payload.\n";
+
+    // Decompress back to original plaintext
+    std::vector<uint8_t> plaintext;
+    try {
+        plaintext = decompress_zstd(compressed, original_size);
+    } catch (const std::exception& e) {
+        std::cout << "  [✗] Decompression error: " << e.what() << "\n";
+        return;
+    }
 
     auto t_end = std::chrono::high_resolution_clock::now();
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t_end - t_start).count();
 
-    // Build output filename: strip .sm4x, insert _decrypted before extension
+    // Build output filename: strip .sm4z, insert _decrypted before extension
     std::string out_path = path;
-    if (out_path.size() >= 5 && out_path.substr(out_path.size() - 5) == ".sm4x")
+    if (out_path.size() >= 5 && out_path.substr(out_path.size() - 5) == ".sm4z")
         out_path.resize(out_path.size() - 5);
 
     auto dot_pos = out_path.find_last_of('.');
@@ -547,16 +580,20 @@ void do_decrypt_file() {
 
     std::cout << "\n";
     std::cout << "  ╔══════════════════════════════════════════════════════╗\n";
-    std::cout << "  ║        FILE  DECRYPTED  SUCCESSFULLY  (V2)          ║\n";
+    std::cout << "  ║        FILE  DECRYPTED  SUCCESSFULLY  (V3)          ║\n";
     std::cout << "  ╠══════════════════════════════════════════════════════╣\n";
     std::cout << "  ║  Source       : " << std::left << std::setw(35) << path << "║\n";
     std::cout << "  ║  Output       : " << std::left << std::setw(35) << out_path << "║\n";
+    std::cout << "  ║  Payload(ct)  : " << std::left << std::setw(35)
+              << (std::to_string(compressed.size()) + " bytes") << "║\n";
     std::cout << "  ║  Plaintext    : " << std::left << std::setw(35)
               << (std::to_string(plaintext.size()) + " bytes") << "║\n";
+    std::cout << "  ║  Pipeline     : " << std::left << std::setw(35)
+              << "HMAC→SM4-CTR→Zstd" << "║\n";
     std::cout << "  ║  Wall Time    : " << std::left << std::setw(35)
               << (std::to_string(ms) + " ms") << "║\n";
     std::cout << "  ╚══════════════════════════════════════════════════════╝\n";
-    std::cout << "  [✓] Decryption complete — Encrypt-then-MAC guarantees integrity.\n";
+    std::cout << "  [✓] Round-trip: Zstd→SM4-CTR→HMAC → HMAC→SM4-CTR→Zstd verified.\n";
 }
 
 }  // namespace

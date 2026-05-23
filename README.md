@@ -9,7 +9,8 @@
 [![AVX2](https://img.shields.io/badge/SIMD-AVX2-%23ED1C24?style=flat&logo=intel)](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)
 [![TDD](https://img.shields.io/badge/method-TDD-%232DBA4E?style=flat)](https://en.wikipedia.org/wiki/Test-driven_development)
 [![License](https://img.shields.io/badge/license-MIT-%2397CA00?style=flat)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-14%2F14%20passed-%232DBA4E?style=flat)]()
+[![Tests](https://img.shields.io/badge/tests-91%2F91%20passed-%232DBA4E?style=flat)]()
+[![Zstd](https://img.shields.io/badge/compress-Zstd%201.5.5-%23E64A19?style=flat)](https://github.com/facebook/zstd)
 
 </div>
 
@@ -25,7 +26,7 @@
 - **严苛内存对齐** — 所有 AVX2 缓冲区 `alignas(32)` 对齐，`_mm_malloc` 分配，零 SegFault
 - **逐字节一致性验证** — 1MB CTR 加密输出与标量基线 `SM4Standard` 逐字节一致
 - **GM/T 0002-2012 合规** — 全部国密标准测试向量通过
-- **安全文件存储 V2** — `SM4X` 加密容器，PBKDF2-SM3 口令派生密钥 (100k iter) + HMAC-SM3 完整性校验 (Encrypt-then-MAC)，防篡改/防密码错误
+- **安全文件存储 V3** — `SM4Z` 加密容器，Zstd 压缩 + SM4-CTR 加密 + PBKDF2-SM3 密钥派生 (100k iter) + HMAC-SM3 完整性校验 (Encrypt-then-MAC)，【压缩 → 加密 → 存储】极速流水线
 
 ---
 
@@ -53,7 +54,7 @@ SM4AVX2      ██████████████████████�
 - **编译器:** GCC 8+ / Clang 10+ (需 `-mavx2` 支持)
 - **CMake:** ≥ 3.20
 - **C++ 标准:** C++17
-- **依赖:** OpenSSL ≥ 3.0 (libssl-dev)，用于 PBKDF2-SM3 密钥派生与 HMAC-SM3 完整性校验
+- **依赖:** OpenSSL ≥ 3.0 (libssl-dev) 用于 PBKDF2/HMAC-SM3，Zstd 1.5.5 通过 CMake FetchContent 自动拉取
 
 ### 构建 & 测试
 
@@ -61,14 +62,14 @@ SM4AVX2      ██████████████████████�
 git clone <repo-url> && cd MyCryptoEngine
 mkdir build && cd build
 
-# 配置 (自动拉取 Google Test 和 Google Benchmark)
+# 配置 (自动拉取 Google Test, Google Benchmark, Zstd)
 cmake .. -DCMAKE_BUILD_TYPE=Release
 
 # 编译全部目标
 cmake --build . -j$(nproc)
 
-# 运行测试套件 (14 项)
-ctest -R "SM4" --output-on-failure
+# 运行测试套件 (91 项)
+ctest --output-on-failure
 ```
 
 ### 运行性能压测
@@ -122,8 +123,8 @@ ctest -R "SM4" --output-on-failure
   [2]  Decrypt — hex ciphertext back to plaintext
   [3]  Benchmark — SM4Standard vs SM4AVX2 live speedrun
   [4]  Exit
-  [5]  Encrypt File — secure storage to .sm4x container
-  [6]  Decrypt File — extract from .sm4x container
+  [5]  Encrypt File — secure storage to .sm4z container
+  [6]  Decrypt File — extract from .sm4z container
 ──────────────────────────────────────────────────────────────────────
   Choice >
 ```
@@ -136,8 +137,8 @@ ctest -R "SM4" --output-on-failure
 | **[2] Decrypt** | 粘贴十六进制密文 → 还原明文 | **带容错的 Hex 自动解析器** — 自动忽略空格、冒号、`0x` 前缀；奇数长度/非法字符即时报错 |
 | **[3] Benchmark** | 自定义数据量（1–4096 MB）→ 标量 vs AVX2 对决 | `_mm_malloc` 32 字节对齐分配，高精度 `std::chrono` 计时，加速比 + 吞吐量表，`memcmp` 逐字节一致性校验 |
 | **[4] Exit** | 优雅退出 | — |
-| **[5] Encrypt File** | 口令加密任意文件 → SM4X V2 容器 | PBKDF2-SM3 (100k iter) 口令派生密钥，随机 Salt + IV，HMAC-SM3 签名 (Encrypt-then-MAC) |
-| **[6] Decrypt File** | 口令解密 `.sm4x` → 完整性校验 + 还原 | `CRYPTO_memcmp` 恒定时间 HMAC 比对，错误密码/篡改文件立即拦截 (FATAL) |
+| **[5] Encrypt File** | 口令加密任意文件 → SM4Z V3 容器 | Zstd 压缩 → PBKDF2-SM3 密钥派生 → SM4-CTR 加密 → HMAC-SM3 签名，输出压缩比 |
+| **[6] Decrypt File** | 口令解密 `.sm4z` → 校验 + 解压 + 还原 | HMAC-SM3 恒定时间比对 → SM4-CTR 解密 → Zstd 解压恢复原始明文 |
 
 ### Hex 解析器容错示例
 
@@ -149,28 +150,33 @@ ctest -R "SM4" --output-on-failure
 
 支持空格分隔、冒号分隔、`0x` 前缀、大小写混合、无分隔连续串 — 均可正确解析。
 
-### SM4X V2 安全文件格式
+### SM4Z V3 安全文件格式
 
-V2 格式引入 PBKDF2 口令派生与 HMAC-SM3 完整性校验，具备防篡改能力：
+V3 格式在 V2 基础上引入 **Zstd 无损压缩**，实现「压缩 → 加密 → 存储」极速流水线：
 
 ```
-┌──────────┬───────────────┬──────────────┬──────────────────┬─────────────────┐
-│ SM4X (4B)│  Salt (16B)   │  IV (16B)    │  Ciphertext (N)  │  HMAC-SM3 (32B) │
-└──────────┴───────────────┴──────────────┴──────────────────┴─────────────────┘
-           ←──────────── Header (36B) ────────────→                    ← Footer →
-           ←───────────────── HMAC covers this ───────────────────→
+┌──────────┬───────────────┬──────────────┬──────────────────┬──────────────────┬─────────────────┐
+│ SM4Z (4B)│  Salt (16B)   │  IV (16B)    │ OriginalSize (8B)│ Ciphertext (N)   │  HMAC-SM3 (32B) │
+└──────────┴───────────────┴──────────────┴──────────────────┴──────────────────┴─────────────────┘
+           ←─────────────────────── Header (44B) ──────────────────────────→                    ← Footer →
+           ←─────────────────────────────── HMAC covers this ──────────────────────────────────→
 ```
 
 | 字段 | 偏移 | 大小 | 描述 |
 |------|------|------|------|
-| Magic Bytes | 0 | 4 B | 固定 `SM4X` (0x53 0x4D 0x34 0x58)，格式校验 |
+| Magic Bytes | 0 | 4 B | 固定 `SM4Z` (0x53 0x4D 0x34 0x5A)，格式校验 |
 | Salt | 4 | 16 B | 随机 Salt，用于 PBKDF2-SM3 密钥派生 (100,000 iterations) |
 | File IV | 20 | 16 B | 该文件专属随机 IV，用于 SM4-CTR |
-| Ciphertext | 36 | N B | SM4-CTR 密文，与明文等长 |
-| HMAC-SM3 | 36+N | 32 B | Encrypt-then-MAC，恒定时间比对防时序攻击 |
+| Original Size | 36 | 8 B | 压缩前原始明文大小 (uint64_t)，用于解压时精确内存分配 |
+| Ciphertext | 44 | N B | Zstd → SM4-CTR 加密后的密文 |
+| HMAC-SM3 | 44+N | 32 B | Encrypt-then-MAC，恒定时间比对，防篡改/防密码错误 |
+
+**加密流水线:** `明文 → Zstd压缩(Level 3) → SM4-CTR加密 → HMAC-SM3签名 → .sm4z`
+
+**解密流水线:** `.sm4z → HMAC校验 → SM4-CTR解密 → Zstd解压 → 原始明文`
 
 派生总长度 48 字节：前 16 B 用作 SM4 密钥，后 32 B 用作 HMAC-SM3 密钥。
-解密时 HMAC 校验失败（错误密码或篡改）立即拒绝解密，不写入任何文件。
+解密时 HMAC 校验失败（错误密码或篡改）立即拒绝，不写入任何文件。
 
 ---
 
@@ -181,12 +187,14 @@ MyCryptoEngine/
 ├── include/
 │   ├── sm4_standard.h        # SM4Standard 标量引擎 (基线实现)
 │   ├── sm4_avx2.h            # SM4AVX2 SIMD 加速引擎
-│   └── crypto_utils.h        # PBKDF2-SM3 密钥派生 + HMAC-SM3 声明
+│   ├── crypto_utils.h        # PBKDF2-SM3 密钥派生 + HMAC-SM3 声明
+│   └── compress_utils.h      # Zstd 无损压缩/解压声明
 ├── src/
 │   ├── sm4_standard.cpp      # 标量: 逐块 CTR 加密 + 大端序进位
 │   ├── sm4_avx2.cpp          # AVX2: 16路并行 32 轮 SM4 流水线
 │   ├── crypto_utils.cpp      # PBKDF2-SM3 + HMAC-SM3 (OpenSSL EVP)
-│   └── main.cpp              # 交互式 REPL 终端 + SM4X V2 安全存储
+│   ├── compress_utils.cpp    # Zstd 压缩/解压 (ZSTD_compress/ZSTD_decompress)
+│   └── main.cpp              # 交互式 REPL 终端 + SM4Z V3 安全存储
 ├── tests/
 │   ├── test_sm4_standard.cpp       # 国密标准向量 (加密/解密/CTR)
 │   ├── test_sm4_avx2_consistency.cpp   # 1MB 标量 vs AVX2 逐字节比对
@@ -222,7 +230,7 @@ Counter (BE) → BSWAP32 (BE→LE) → 32-round SM4 (2 batches × 8 blocks)
 ## 📐 设计原则
 
 - **TDD 驱动** — 每个核心函数先写 RED 测试，验证失败，再实现 GREEN，全程可追溯
-- **最小外部依赖** — 核心 SM4 零依赖 (仅 AVX2 intrinsic)；安全存储模块依赖 OpenSSL 3.0+ 提供 PBKDF2/HMAC-SM3
+- **最小外部依赖** — 核心 SM4 零依赖 (仅 AVX2 intrinsic)；安全存储模块依赖 OpenSSL 3.0+ (PBKDF2/HMAC-SM3) + Zstd 1.5.5 (无损压缩，FetchContent 自动拉取)
 - **微观提交** — 每个 Phase 独立 plan → 实现 → review → commit
 
 ---

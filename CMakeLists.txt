@@ -22,6 +22,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googlebenchmark)
 
+FetchContent_Declare(
+    zstd
+    GIT_REPOSITORY https://github.com/facebook/zstd.git
+    GIT_TAG        v1.5.5
+    SOURCE_SUBDIR  build/cmake
+)
+FetchContent_MakeAvailable(zstd)
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 find_package(OpenSSL REQUIRED)
@@ -39,8 +47,14 @@ add_library(crypto_utils STATIC
 )
 target_link_libraries(crypto_utils OpenSSL::Crypto)
 
+add_library(compress_utils STATIC
+    src/compress_utils.cpp
+)
+target_include_directories(compress_utils PRIVATE ${zstd_SOURCE_DIR}/lib)
+target_link_libraries(compress_utils libzstd_static)
+
 add_executable(sm4_showcase src/main.cpp)
-target_link_libraries(sm4_showcase sm4_avx2 sm4_core crypto_utils)
+target_link_libraries(sm4_showcase sm4_avx2 sm4_core crypto_utils compress_utils)
 
 enable_testing()
 add_subdirectory(tests)
