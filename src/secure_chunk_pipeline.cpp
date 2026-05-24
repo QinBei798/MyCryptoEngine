@@ -26,6 +26,9 @@ std::vector<uint8_t> SecureChunkPipeline::seal_chunk(
     SM4AVX2 cipher(sm4_key);
     std::vector<uint8_t> ciphertext = cipher.encrypt_ctr(iv, compressed);
 
+    // Wipe compressed plaintext after encryption
+    OPENSSL_cleanse(compressed.data(), compressed.size());
+
     // Step 3: sign with HMAC-SM3
     std::vector<uint8_t> mac = calc_hmac_sm3(hmac_key, ciphertext);
 
@@ -37,6 +40,9 @@ std::vector<uint8_t> SecureChunkPipeline::seal_chunk(
     result.reserve(ciphertext.size() + mac.size());
     result.insert(result.end(), ciphertext.begin(), ciphertext.end());
     result.insert(result.end(), mac.begin(), mac.end());
+
+    // Wipe ciphertext after result is assembled
+    OPENSSL_cleanse(ciphertext.data(), ciphertext.size());
 
     return result;
 }
@@ -63,7 +69,11 @@ std::vector<uint8_t> SecureChunkPipeline::open_chunk(
     std::vector<uint8_t> expected_mac = calc_hmac_sm3(hmac_key,
         std::vector<uint8_t>(data, data + ciphertext_len));
 
-    if (CRYPTO_memcmp(received_mac.data(), expected_mac.data(), kHmacSize) != 0) {
+    const bool hmac_ok = (CRYPTO_memcmp(received_mac.data(), expected_mac.data(), kHmacSize) == 0);
+    OPENSSL_cleanse(received_mac.data(), received_mac.size());
+    OPENSSL_cleanse(expected_mac.data(), expected_mac.size());
+
+    if (!hmac_ok) {
         throw std::runtime_error("open_chunk: HMAC verification failed");
     }
 
@@ -72,8 +82,14 @@ std::vector<uint8_t> SecureChunkPipeline::open_chunk(
     std::vector<uint8_t> ciphertext(data, data + ciphertext_len);
     std::vector<uint8_t> compressed = cipher.encrypt_ctr(iv, ciphertext);
 
+    // Wipe ciphertext after decryption
+    OPENSSL_cleanse(ciphertext.data(), ciphertext.size());
+
     // Step 4: decompress
     std::vector<uint8_t> plaintext = decompress_zstd(compressed, static_cast<size_t>(original_size));
+
+    // Wipe compressed data after decompression
+    OPENSSL_cleanse(compressed.data(), compressed.size());
 
     return plaintext;
 }

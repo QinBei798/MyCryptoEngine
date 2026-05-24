@@ -61,3 +61,22 @@ target_link_libraries(test_secure_chunk_pipeline
 )
 
 gtest_discover_tests(test_secure_chunk_pipeline)
+
+add_executable(test_sm4z_archiver
+    test_sm4z_archiver.cpp
+)
+
+target_link_libraries(test_sm4z_archiver
+    sm4z_archiver
+    secure_chunk_pipeline
+    compress_utils
+    sm4_avx2
+    sm4_core
+    crypto_utils
+    libzstd_static
+    OpenSSL::Crypto
+    GTest::gtest
+    GTest::gtest_main
+)
+
+gtest_discover_tests(test_sm4z_archiver)

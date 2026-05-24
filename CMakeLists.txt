@@ -57,6 +57,10 @@ add_library(secure_chunk_pipeline STATIC
     src/secure_chunk_pipeline.cpp
 )
 
+add_library(sm4z_archiver STATIC
+    src/sm4z_archiver.cpp
+)
+
 add_executable(sm4_showcase src/main.cpp)
 target_link_libraries(sm4_showcase sm4_avx2 sm4_core crypto_utils compress_utils)
 
