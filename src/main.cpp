@@ -44,7 +44,7 @@ void print_hex_line(const char *label, const std::vector<uint8_t> &data) {
       std::cout << " ";
     std::cout << std::setw(2) << static_cast<int>(data[i]) << " ";
   }
-  std::cout << std::dec << "\n";
+  std::cout << std::dec << std::setfill(' ') << "\n";
 }
 
 void print_hex_dump(const std::vector<uint8_t> &data) {
@@ -67,7 +67,7 @@ void print_hex_dump(const std::vector<uint8_t> &data) {
     }
     std::cout << "|\n";
   }
-  std::cout << std::dec;
+  std::cout << std::dec << std::setfill(' ');
 }
 
 // ── Robust hex parser ─────────────────────────────────────────────────
