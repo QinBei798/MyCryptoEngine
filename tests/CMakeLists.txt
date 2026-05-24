@@ -44,3 +44,20 @@ gtest_discover_tests(test_sm4_standard)
 gtest_discover_tests(test_sm4_avx2_consistency)
 gtest_discover_tests(test_sm4_avx2_counter)
 gtest_discover_tests(test_sm4_avx2_sbox)
+
+add_executable(test_secure_chunk_pipeline
+    test_secure_chunk_pipeline.cpp
+)
+
+target_link_libraries(test_secure_chunk_pipeline
+    secure_chunk_pipeline
+    compress_utils
+    sm4_avx2
+    sm4_core
+    crypto_utils
+    libzstd_static
+    GTest::gtest
+    GTest::gtest_main
+)
+
+gtest_discover_tests(test_secure_chunk_pipeline)
